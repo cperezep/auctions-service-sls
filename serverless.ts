@@ -8,8 +8,8 @@ const serverlessConfiguration: AWS = {
   custom: {
     webpack: {
       webpackConfig: './webpack.config.js',
-      includeModules: true
-    }
+      includeModules: true,
+    },
   },
   plugins: ['serverless-webpack'],
   provider: {
@@ -24,7 +24,7 @@ const serverlessConfiguration: AWS = {
     },
     lambdaHashingVersion: '20201221',
   },
-  functions: { hello }
-}
+  functions: { hello },
+};
 
 module.exports = serverlessConfiguration;
