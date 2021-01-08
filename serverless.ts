@@ -1,16 +1,20 @@
 import type { AWS } from '@serverless/typescript';
 
-import { hello } from './src/functions';
+// Functions
+import { createAuction } from './src/functions';
+
+// IAM
+import { AuctionsTableIAM } from './src/iam/auctionsTableIAM';
+
+// Resources
+import resources, { AuctionsTable } from './src/resources';
+
+// Utils
+import { ref } from './src/libs/intrinsic';
 
 const serverlessConfiguration: AWS = {
   service: 'auctions-service',
   frameworkVersion: '2',
-  custom: {
-    webpack: {
-      webpackConfig: './webpack.config.js',
-      includeModules: true,
-    },
-  },
   plugins: ['serverless-webpack'],
   provider: {
     name: 'aws',
@@ -21,10 +25,28 @@ const serverlessConfiguration: AWS = {
     },
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
+      AUCTIONS_TABLE_NAME: '${self:custom.AuctionsTable.name}',
     },
+    stage: "${opt:stage, 'dev'}",
     lambdaHashingVersion: '20201221',
+    iamRoleStatements: [AuctionsTableIAM],
   },
-  functions: { hello },
+  functions: { createAuction },
+  resources: {
+    Resources: {
+      AuctionsTable,
+    },
+  },
+  custom: {
+    webpack: {
+      webpackConfig: './webpack.config.js',
+      includeModules: true,
+    },
+    AuctionsTable: {
+      name: ref(resources, AuctionsTable),
+      arn: { 'Fn::GetAtt': ['AuctionsTable', 'Arn'] },
+    },
+  },
 };
 
 module.exports = serverlessConfiguration;

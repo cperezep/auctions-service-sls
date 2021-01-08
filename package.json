@@ -11,7 +11,10 @@
   "dependencies": {
     "@middy/core": "^1.5.0",
     "@middy/http-json-body-parser": "^1.5.0",
-    "source-map-support": "^0.5.19"
+    "aws-sdk": "^2.824.0",
+    "lodash": "^4.17.20",
+    "source-map-support": "^0.5.19",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@serverless/typescript": "^2.16.0",
