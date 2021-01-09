@@ -8,8 +8,17 @@
     "removeComments": true,
     "sourceMap": true,
     "target": "ESNext",
-    "outDir": "lib"
+    "outDir": "lib",
+    "skipLibCheck": true
   },
-  "include": ["src/**/*.ts"],
-  "exclude": ["node_modules/**/*", ".serverless/**/*", ".webpack/**/*", "_warmup/**/*", ".vscode/**/*"]
+  "include": ["./**/*.ts"],
+  "exclude": [
+    "node_modules/**/*",
+    ".serverless/**/*",
+    ".webpack/**/*",
+    "_warmup/**/*",
+    ".vscode/**/*",
+    "*.config.js",
+    "**/*.js"
+  ]
 }
