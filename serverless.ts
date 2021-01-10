@@ -1,7 +1,7 @@
 import type { AWS } from '@serverless/typescript';
 
 // Functions
-import { createAuction, getAuctions, getAuction } from './src/functions';
+import { createAuction, getAuctions, getAuction, placeBid } from './src/functions';
 
 // IAM
 import { AuctionsTableIAM } from './src/iam/auctionsTableIAM';
@@ -31,7 +31,7 @@ const serverlessConfiguration: AWS = {
     lambdaHashingVersion: '20201221',
     iamRoleStatements: [AuctionsTableIAM],
   },
-  functions: { createAuction, getAuctions, getAuction },
+  functions: { createAuction, getAuctions, getAuction, placeBid },
   resources: {
     Resources: {
       AuctionsTable,

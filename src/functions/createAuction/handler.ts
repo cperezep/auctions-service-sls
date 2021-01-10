@@ -17,8 +17,9 @@ const getAuction: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (
 ) => {
   const auction: Auction = {
     id: v4(),
-    name: event.body.name,
+    title: event.body.title,
     createdAt: new Date().toISOString(),
+    highestBid: { amount: 0 },
   };
 
   try {
