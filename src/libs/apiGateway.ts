@@ -12,16 +12,9 @@ export const successResponse = (response: Record<string, unknown>): Response => 
   };
 };
 
-export const notFoundResponse = (response: Record<string, unknown>): Response => {
+export const createdResponse = (response: Record<string, unknown>): Response => {
   return {
-    statusCode: 404,
-    body: JSON.stringify(response),
-  };
-};
-
-export const errorResponse = (response: Record<string, unknown>): Response => {
-  return {
-    statusCode: 500,
+    statusCode: 201,
     body: JSON.stringify(response),
   };
 };

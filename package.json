@@ -6,12 +6,15 @@
   "scripts": {
     "lint": "eslint . --ext js,ts --cache --fix",
     "prettier": "prettier --write ./**/*.{js,ts}",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "pre-deploy": "npm run prettier && npm run eslint && npm run typecheck"
   },
   "dependencies": {
     "@middy/core": "^1.5.0",
+    "@middy/http-error-handler": "^1.5.0",
     "@middy/http-json-body-parser": "^1.5.0",
     "aws-sdk": "^2.824.0",
+    "http-errors": "^1.8.0",
     "lodash": "^4.17.20",
     "source-map-support": "^0.5.19",
     "uuid": "^8.3.2"
@@ -19,6 +22,7 @@
   "devDependencies": {
     "@serverless/typescript": "^2.16.0",
     "@types/aws-lambda": "^8.10.64",
+    "@types/http-errors": "^1.8.0",
     "@types/node": "^14.14.6",
     "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "^4.12.0",

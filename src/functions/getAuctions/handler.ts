@@ -2,7 +2,8 @@ import 'source-map-support/register';
 
 import { DynamoDB } from 'aws-sdk';
 import { APIGatewayProxyHandler } from 'aws-lambda';
-import { successResponse, errorResponse } from '@libs/apiGateway';
+import * as createError from 'http-errors';
+import { successResponse } from '@libs/apiGateway';
 import { middyfy } from '@libs/lambda';
 import { Auction } from 'src/models/auction.model';
 
@@ -21,7 +22,7 @@ const getAuctions: APIGatewayProxyHandler = async () => {
     auctions = result.Items as Auction[];
   } catch (error) {
     console.error(error);
-    return errorResponse({ message: error });
+    throw createError(500, error);
   }
 
   return successResponse({ data: { auctions } });

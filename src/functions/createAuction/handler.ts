@@ -2,8 +2,9 @@ import 'source-map-support/register';
 
 import { v4 } from 'uuid';
 import { DynamoDB } from 'aws-sdk';
+import * as createError from 'http-errors';
 import type { ValidatedEventAPIGatewayProxyEvent, ValidatedAPIGatewayProxyEvent } from '@libs/apiGateway';
-import { successResponse, errorResponse } from '@libs/apiGateway';
+import { createdResponse } from '@libs/apiGateway';
 import { middyfy } from '@libs/lambda';
 
 import schema from './schema';
@@ -29,10 +30,10 @@ const getAuction: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (
       .promise();
   } catch (error) {
     console.error(error);
-    return errorResponse({ message: error });
+    throw createError(500, error);
   }
 
-  return successResponse({ data: { auction } });
+  return createdResponse({ data: { auction } });
 };
 
 export const main = middyfy(getAuction);

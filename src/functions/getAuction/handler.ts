@@ -2,16 +2,15 @@ import 'source-map-support/register';
 
 import { DynamoDB } from 'aws-sdk';
 import { APIGatewayEvent, APIGatewayProxyHandler } from 'aws-lambda';
-import { successResponse, notFoundResponse, errorResponse } from '@libs/apiGateway';
+import * as createError from 'http-errors';
+import { successResponse } from '@libs/apiGateway';
 import { middyfy } from '@libs/lambda';
 import { Auction } from 'src/models/auction.model';
 
 const dynamodb = new DynamoDB.DocumentClient();
 
-const getAuction: APIGatewayProxyHandler = async (event: APIGatewayEvent) => {
+export const getAuctionById = async (id: string): Promise<Auction> => {
   let auction: Auction;
-  const { id } = event.pathParameters;
-
   try {
     const result = await dynamodb
       .get({
@@ -23,12 +22,19 @@ const getAuction: APIGatewayProxyHandler = async (event: APIGatewayEvent) => {
     auction = result.Item as Auction;
   } catch (error) {
     console.error(error);
-    return errorResponse({ message: error });
+    throw createError(500, error);
   }
 
   if (!auction) {
-    return notFoundResponse({ message: `Auction with ID ${id} not found!` });
+    throw createError(404, `Auction with ID ${id} not found!`);
   }
+
+  return auction;
+};
+
+const getAuction: APIGatewayProxyHandler = async (event: APIGatewayEvent) => {
+  const { id } = event.pathParameters;
+  const auction = await getAuctionById(id);
 
   return successResponse({ data: { auction } });
 };
