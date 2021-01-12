@@ -15,10 +15,16 @@ const dynamodb = new DynamoDB.DocumentClient();
 const getAuction: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (
   event: ValidatedAPIGatewayProxyEvent<typeof schema>,
 ) => {
+  const now = new Date();
+  const endDate = new Date();
+  endDate.setHours(now.getHours() + 1);
+
   const auction: Auction = {
     id: v4(),
     title: event.body.title,
-    createdAt: new Date().toISOString(),
+    status: 'OPEN',
+    createdAt: now.toISOString(),
+    endingAt: endDate.toISOString(),
     highestBid: { amount: 0 },
   };
 

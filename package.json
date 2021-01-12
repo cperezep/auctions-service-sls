@@ -7,7 +7,8 @@
     "lint": "eslint . --ext js,ts --cache --fix",
     "prettier": "prettier --write ./**/*.{js,ts}",
     "typecheck": "tsc --noEmit",
-    "pre-deploy": "npm run prettier && npm run lint && npm run typecheck"
+    "pre-deploy": "npm run prettier && npm run lint && npm run typecheck",
+    "deploy": "npx sls deploy -v"
   },
   "dependencies": {
     "@middy/core": "^1.5.0",

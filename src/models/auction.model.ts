@@ -3,6 +3,7 @@ export interface Auction {
   title: string;
   status?: 'OPEN' | 'CLOSED';
   createdAt: string;
+  endingAt: string;
   highestBid?: Bid;
 }
 
