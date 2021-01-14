@@ -4,7 +4,7 @@ import { DynamoDB } from 'aws-sdk';
 import * as createHttpError from 'http-errors';
 import { successResponse, ValidatedAPIGatewayProxyEvent, ValidatedEventAPIGatewayProxyEvent } from '@libs/apiGateway';
 import { middyfy } from '@libs/lambda';
-import { Auction } from 'src/models/auction.model';
+import { Auction, AuctionStatus } from 'src/models/auction.model';
 import { getAuctionById } from '../getAuction/handler';
 
 import schema from './schema';
@@ -17,6 +17,10 @@ const placeBid: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (
   const { id } = event.pathParameters;
   const { amount } = event.body;
   const auction = await getAuctionById(id);
+
+  if (auction.status === AuctionStatus.CLOSED) {
+    throw createHttpError(403, 'You cannot bid on closed auctions!');
+  }
 
   if (amount <= auction.highestBid.amount) {
     throw createHttpError(403, `Your bid must be higher than ${auction.highestBid.amount}!`);

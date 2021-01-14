@@ -1,7 +1,7 @@
 export interface Auction {
   id: string;
   title: string;
-  status?: 'OPEN' | 'CLOSED';
+  status?: AuctionStatus;
   createdAt: string;
   endingAt: string;
   highestBid?: Bid;
@@ -9,4 +9,9 @@ export interface Auction {
 
 interface Bid {
   amount: number;
+}
+
+export enum AuctionStatus {
+  OPEN = 'OPEN',
+  CLOSED = 'CLOSED',
 }

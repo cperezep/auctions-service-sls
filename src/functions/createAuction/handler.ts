@@ -8,7 +8,7 @@ import { createdResponse } from '@libs/apiGateway';
 import { middyfy } from '@libs/lambda';
 
 import schema from './schema';
-import { Auction } from 'src/models/auction.model';
+import { Auction, AuctionStatus } from 'src/models/auction.model';
 
 const dynamodb = new DynamoDB.DocumentClient();
 
@@ -22,7 +22,7 @@ const getAuction: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (
   const auction: Auction = {
     id: v4(),
     title: event.body.title,
-    status: 'OPEN',
+    status: AuctionStatus.OPEN,
     createdAt: now.toISOString(),
     endingAt: endDate.toISOString(),
     highestBid: { amount: 0 },

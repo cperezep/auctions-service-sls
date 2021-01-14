@@ -1,13 +1,13 @@
 import 'source-map-support/register';
 
 import { DynamoDB } from 'aws-sdk';
-import { Auction } from 'src/models/auction.model';
+import { Auction, AuctionStatus } from 'src/models/auction.model';
 
 const dynamodb = new DynamoDB.DocumentClient();
 
 export const closeAuction = async (auction: Auction): Promise<Auction> => {
   const id = auction.id;
-  const status = 'CLOSE';
+  const status = AuctionStatus.CLOSED;
 
   const params = {
     TableName: process.env.AUCTIONS_TABLE_NAME,

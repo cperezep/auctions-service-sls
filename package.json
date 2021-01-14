@@ -8,7 +8,7 @@
     "prettier": "prettier --write ./**/*.{js,ts}",
     "typecheck": "tsc --noEmit",
     "pre-deploy": "npm run prettier && npm run lint && npm run typecheck",
-    "deploy": "npx sls deploy -v"
+    "deploy": "npm run pre-deploy && npx sls deploy -v"
   },
   "dependencies": {
     "@middy/core": "^1.5.0",
