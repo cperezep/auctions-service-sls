@@ -13,7 +13,7 @@ export const AuctionsTable: CloudFormationResource = {
     KeySchema: [{ AttributeName: 'id', KeyType: 'HASH' }],
     GlobalSecondaryIndexes: [
       {
-        IndexName: 'statusAndEndingAt',
+        IndexName: 'statusAndEndDate',
         KeySchema: [
           // Partition key
           { AttributeName: 'status', KeyType: 'HASH' },

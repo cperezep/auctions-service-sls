@@ -5,25 +5,25 @@ import { Auction } from 'src/models/auction.model';
 
 const dynamodb = new DynamoDB.DocumentClient();
 
-export const getEndedAuctions = async (): Promise<Auction[]> => {
-  const now = new Date().toISOString();
-  const status = 'OPEN';
+export const closeAuction = async (auction: Auction): Promise<Auction> => {
+  const id = auction.id;
+  const status = 'CLOSE';
 
   const params = {
     TableName: process.env.AUCTIONS_TABLE_NAME,
-    IndexName: 'statusAndEndDate',
+    Key: { id },
     // status is a reserved word so is necessary to rename it
-    KeyConditionExpression: '#status = :status AND endingAt <= :now',
+    UpdateExpression: 'set #status = :status',
     ExpressionAttributeValues: {
       ':status': status,
-      ':now': now,
     },
     ExpressionAttributeNames: {
       '#status': 'status',
     },
+    ReturnValues: 'ALL_NEW',
   };
 
-  const result = await dynamodb.query(params).promise();
+  const result = await dynamodb.update(params).promise();
 
-  return result.Items as Auction[];
+  return result.Attributes as Auction;
 };
